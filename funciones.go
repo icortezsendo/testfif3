@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"strconv"
 )
 
@@ -28,9 +28,8 @@ func separaDatos(entrada []byte) (map[string]string, string) {
 	}
 
 	//imprimeLog(tipo, largoNum, valor, 0)
-	salida := validaTipo(tipo, valor)
-	if !salida {
-		errores = "Valor de dato no corresponde al tipo."
+	errores = validaTipo(tipo, valor)
+	if errores != "" {
 		return mapa, errores
 	}
 
@@ -47,10 +46,8 @@ func separaDatos(entrada []byte) (map[string]string, string) {
 
 			//imprimeLog(tipo, largoNum, valor, i)
 
-			salida = validaTipo(tipo, valor)
-
-			if !salida {
-				errores = "Valor de dato no corresponde al tipo."
+			errores = validaTipo(tipo, valor)
+			if errores != "" {
 				return mapa, errores
 			}
 
@@ -86,30 +83,28 @@ func rescataValores(largoAcomulado int, datoEntrada string) (string, int, string
 
 }
 
-func validaTipo(tipo string, valor string) bool {
+func validaTipo(tipo string, valor string) string {
 	tipoDato := tipo[:1]
 	if tipoDato != "N" &&
 		tipoDato != "n" &&
 		tipoDato != "A" &&
 		tipoDato != "a" {
-		return false
+		return "Tipo dato debe ser N o A, no " + string(tipoDato)
 	}
 
 	if tipoDato == "N" || tipoDato == "n" {
 		_, err := strconv.Atoi(valor)
-		if err == nil {
-			return true
-		} else {
-			return false
+		if err != nil {
+			return "Tipo de dato definido como Numerico y es Alfanumerico"
 		}
 	}
-	return true
+	return ""
 }
 
-func imprimeLog(tipo string, largo int, valor string, vuelta int) {
+/*func imprimeLog(tipo string, largo int, valor string, vuelta int) {
 	fmt.Println("Tipo:", tipo)
 	fmt.Println("Largo:", largo)
 	fmt.Println("Valor:", valor)
 	fmt.Println("Vuelta:", vuelta)
 	fmt.Println("======================")
-}
+}*/
